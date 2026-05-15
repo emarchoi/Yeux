@@ -1,0 +1,32 @@
+{% extends "/layouts/logreg.html" %}
+
+{% set in_width = "430px" %}
+{% set in_height = "350px" %}
+
+{% block title %}Yeux | Log In{% endblock %}
+
+<!-- Log In Page -->
+
+{% block content %}
+<div class="container d-flex text-center justify-content-center align-items-center py-4">
+    <form method="POST" action="/login">
+
+        {% if error %}
+        <p class="yeux-inva">Invalid Username or Password</p>
+        {% endif %}
+
+        <input type="text" autocomplete="off"
+            class="form-control my-3 yeux-form-bg {{ 'is-invalid' if user_error or error}}" name="username"
+            placeholder="{{ 'Enter Your Username' if user_error else 'Username'}}" style="width: 260px; height: 60px;">
+
+        <input type="password" autocomplete="off" class="form-control my-3 yeux-form-bg {{ 'is-invalid' if pass_error or error}}"
+            name="password" placeholder="{{ 'Enter Your Password' if pass_error else 'Password'}}"
+            style="width: 260px; height: 60px;">
+
+        <button type="submit" class="btn yeux-l-btn btn-lg" style="width: 180px; height: 50px;">LOG IN</button>
+
+        <p class="mt-3 yeux-text-light">Don't have an account? <a class="yeux-text" href="/register">Register</a></p>
+
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends "layouts/default.html" %}
+
+{% block title %} Yeux | Film{% endblock %}
+
+{% block nav %}
+<a href="/film" class="text-decoration-none">
+    <button class="btn btn-lg yeux-start-btn {{ 'active' if request.path == '/film' else '' }}"
+        style="width: 50px; height: 50px;">
+        <i class="bi bi-film"></i>
+    </button>
+</a>
+<a href="/book" class="text-decoration-none">
+    <button class="btn btn-lg yeux-start-btn" style="width: 50px; height: 50px;">
+        <i class="bi bi-journal-bookmark"></i>
+    </button>
+</a>
+
+{% endblock %}
+
+
+{% block page %}
+
+<!-- Buttons for Add and Edit -->
+<div class="container-fluid d-flex flex-column align-items-center px-2 px-md-4">
+    <div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
+        <h2 class="yeux-h im-fell me-3">Your Film List</h2>
+        <div class="d-flex gap-2">
+            <button class="btn yeux-lg-btn" type="button" data-bs-toggle="modal" data-bs-target="#addfilmModal" style="width: 40px; height: 40px;">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+            <button class="btn yeux-lg-btn" type="button" data-bs-toggle="modal" data-bs-target="#filterfilmModal" style="width: 40px; height: 40px;">
+                <i class="bi bi-filter"></i>
+            </button>
+            <button class="btn yeux-lg-btn" type="button" data-bs-toggle="modal" data-bs-target="#editfilmModal" style="width: 40px; height: 40px;">
+                <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn yeux-lg-btn" type="button" data-bs-toggle="modal" data-bs-target="#deletefilmModal" style="width: 40px; height: 40px;">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Film List Table -->
+    <div class="yeux-ic-bg yeux-border-color border border-2 shadow table-responsive w-100"
+    style="max-width: 850px; height: 70vh; min-height: 400px; overflow-y: auto;">
+        <table class="table text-center yeux-bg yeux-border-color align-middle" style="width: 100%; min-width: 600px;">
+            <thead>
+                <tr>
+                    <th class="yeux-text" style="width: 30%;">TITLE</th>
+                    <th class="yeux-text" style="width: 20%;">TYPE</th>
+                    <th class="yeux-text" style="width: 15%;">SEASON</th>
+                    <th class="yeux-text" style="width: 15%;">EPISODE</th>
+                    <th class="yeux-text" style="width: 20%;">STATUS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for film in films %}
+                <tr>
+                    <td class="yeux-text-light text-truncate px-2">{{ film.title }}</td>
+                    <td class="yeux-text-light px-1">
+                        <span class="badge yeux-current small">{{ film.type }}</span>
+                    </td>
+                    <td class="yeux-text-light">{{ film.season }}</td>
+                    <td class="yeux-text-light">{{ film.episode }}</td>
+                    <td class="yeux-text-light px-1">
+                        {% if film.status == "watching" %}
+                        <span class="badge yeux-current w-80">WATCHING</span>
+                        {% elif film.status == "towatch" %}
+                        <span class="badge yeux-wait w-80">TO WATCH</span>
+                        {% elif film.status == "watched" %}
+                        <span class="badge yeux-complete w-80">WATCHED</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ADD FILM MODAL -->
+    <div class="modal fade" id="addfilmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content yeux-md-bg">
+                <form method="post" action="/film_add">
+                    <div class="modal-body">
+                        <h2 class="yeux-text im-fell text-center">ADD NEW FILM</h2>
+
+                        <div class="mb-3">
+                            <input type="text" autocomplete="off" class="form-control yeux-form-bg" placeholder="Title"
+                                name="title" required>
+                        </div>
+
+                        <select class="form-control yeux-form-bg mb-3" name="type" id="add_type" required>
+                            <option value="" disabled selected>Type</option>
+                            <option value="movie">Movie</option>
+                            <option value="series">Series</option>
+                        </select>
+
+                        <div class="mb-3">
+                            <input type="number" class="form-control yeux-form-bg" placeholder="Season" name="season"
+                                min="1" id="add_season">
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="number" class="form-control yeux-form-bg" placeholder="Episodes Watched"
+                                name="episodes" min="1" id="add_episode">
+                        </div>
+
+                        <select class="form-control yeux-form-bg mb-3" name="status" required>
+                            <option value="" disabled selected>Status</option>
+                            <option value="watching">Watching</option>
+                            <option value="towatch">To Watch</option>
+                            <option value="watched">Watched</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end pb-3 px-3 gap-2">
+                        <button type="button" class="yeux-lg-btn" style="width: 40px; height: 40px;"
+                            data-bs-dismiss="modal">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <button type="submit" class="yeux-lg-btn" style="width: 40px; height: 40px;">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT FILM MODAL -->
+    <div class="modal fade" id="editfilmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content yeux-md-bg">
+                <form method="POST" action="/edit_film">
+                    <div class="modal-body">
+                        <h2 class="yeux-text im-fell text-center">EDIT FILM</h2>
+
+                        <select class="form-control yeux-form-bg mb-3" name="title" id="mv_name" required>
+                            <option value="" disabled selected>Choose a Film to EDIT</option>
+                            {% for film in films %}
+                            <option value="{{ film.title }}" data-type="{{ film.type }}">
+                                {{ film.title }}
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        <div id="series-fields">
+                            <div class="mb-3">
+                                <input type="number" class="form-control yeux-form-bg" placeholder="Season"
+                                    name="season" min="1" id="ch_season">
+                            </div>
+                            <div class="mb-3">
+                                <input type="number" class="form-control yeux-form-bg" placeholder="Episodes Watched"
+                                    name="episodes" min="1" id="ch_episodes">
+                            </div>
+                        </div>
+
+                        <select class="form-control yeux-form-bg mb-3" name="status" required>
+                            <option value="" disabled selected>Status</option>
+                            <option value="watching">Watching</option>
+                            <option value="towatch">To Watch</option>
+                            <option value="watched">Watched</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end pb-3 px-3 gap-2">
+                        <button type="button" class="yeux-lg-btn" style="width: 40px; height: 40px;"
+                            data-bs-dismiss="modal">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <button type="submit" class="yeux-lg-btn" style="width: 40px; height: 40px;">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE FILM MODAL -->
+    <div class="modal fade" id="deletefilmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content yeux-md-bg">
+                <form method="POST" action="/delete_film">
+                    <div class="modal-body">
+                        <h2 class="yeux-text im-fell text-center">REMOVE FILM</h2>
+
+                        <select class="form-control yeux-form-bg mb-3" name="title" id="mv_name">
+                            <option value="" disabled selected>Choose a Film to REMOVE</option>
+                            {% for film in films %}
+                            <option value="{{ film.title }}">
+                                {{ film.title }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end pb-3 px-3 gap-2">
+                        <button type="button" class="yeux-lg-btn" style="width: 40px; height: 40px;"
+                            data-bs-dismiss="modal">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <button type="submit" class="yeux-lg-btn" style="width: 40px; height: 40px;">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTER LIST -->
+    <div class="modal fade" id="filterfilmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content yeux-md-bg">
+                <form method="POST" action="/filter_film">
+                    <div class="modal-body">
+                        <h2 class="yeux-text im-fell text-center">FILTER LIST</h2>
+
+                        <select class="form-control yeux-form-bg mb-3" name="status">
+                            <option value="" disabled selected>Filter</option>
+                            <option value="alphabetical">
+                                ALPHABETICAL
+                            </option>
+                            <option value="status">
+                                STATUS
+                            </option>
+                            <option value="type">
+                                TYPE
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end pb-3 px-3 gap-2">
+                        <button type="button" class="yeux-lg-btn" style="width: 40px; height: 40px;"
+                            data-bs-dismiss="modal">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <button type="submit" class="yeux-lg-btn" style="width: 40px; height: 40px;">
+                            <i class="bi bi-check"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

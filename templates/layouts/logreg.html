@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+        <title>{% block title %}Yeux{% endblock %}</title>
+    </head>
+
+    <body class="yeux-bg">
+
+        <div class="container vh-100 d-flex justify-content-center align-items-center">
+            <div class=" yeux-oc-bg yeux-border-color border border-2 shadow w-100" style="max-width: 800px; min-height: 600px; height: auto;">
+                <div class="text-center py-4">
+                    <a href="/"> <img src="{{ url_for('static', filename='yeux_logo.png') }}" class="img-fluid" alt="Yeux Logo"
+                            style="max-width: 350px; height:auto"></a>
+                </div>
+                <div class="container justify-content-center align-items-center yeux-ic-bg yeux-border-color border border-2"
+                    style="width:90%; max-width: {{ in_width|default('600px') }}; min-height: {{ in_height|default('350px') }}; height:auto;">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+
+</html>

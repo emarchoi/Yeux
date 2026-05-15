@@ -1,0 +1,30 @@
+{% extends "layouts/default.html" %}
+
+{% block title %} Yeux | Welcome {% endblock %}
+
+<!-- WELCOME CONTENT -->
+<!-- SEE FIGMA -->
+<!-- LOG OUT BUTTON FOR THE NAVBAR -->
+ 
+{% block content %}
+
+<div class="text-center">
+    <h1 class="yeux-h im-fell display-4 fw-bold">Welcome to Yeux, {{name}}.</h1>
+    <p class="yeux-sh im-fell fs-3">KEEP AN EYE ON WHAT YOU WATCH & READ</p>
+    <p class="yeux-p mt-4 mb-4 fs-5">START AND SEE YOUR LIST</p>
+    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
+        <a href="/film" class="text-decoration-none w-100 w-sm-auto">
+            <button class="btn btn-lg yeux-start-btn w-100 d-flex align-items-center justify-content-center gap-2" style="width: 200px; height: 55px;">
+                <i class="bi bi-film"></i> <span>FILMS</span>
+            </button>
+
+        </a>
+        <a href="/book" class="text-decoration-none w-100 w-sm-auto">
+            <button class="btn btn-lg yeux-start-btn w-100 d-flex align-items-center justify-content-center gap-2" style="width: 200px; height: 55px;">
+                <i class="bi bi-journal-bookmark"></i> <span>BOOKS</span>
+            </button>
+
+        </a>
+    </div>
+</div>
+{% endblock %}
