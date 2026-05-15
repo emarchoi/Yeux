@@ -7,10 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'choi_pogi'
+app.secret_key = ''
 
 # Database Configuration - MySQL (MariaDB)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://amari_dev:choi@localhost/yeux_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql:'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Session Configuration - Store sa MariaDB
