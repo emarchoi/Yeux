@@ -60,5 +60,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    document.getElementById('pass_toggle').addEventListener('click', function() {
+
+        const password = document.getElementById('pass');
+
+        if(password.type === 'password') {
+            password.type = 'text';
+        }else{
+            password.type = 'password';
+        }
+    });
 });
 
